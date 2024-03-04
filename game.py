@@ -28,17 +28,16 @@ def initialize_pygame() -> pygame.Surface:
 
 
 def draw_participant_cards(screen: pygame.Surface, participant_hand: list[dict[str, str, int, pygame.Surface]],
-                           top_left: [int, int], hidden=True):
+                           x: int, y: int, hidden=True):
     card_width_and_buffer = participant_hand[0]["image"].get_width() + 10
-    y = top_left[1]
 
     for i in range(0, len(participant_hand)):
         if hidden and i == 0:
             card_img = deck.CARD_BACK
         else:
             card_img = participant_hand[i]["image"]
-        x = top_left[0] + (i * card_width_and_buffer)
-        screen.blit(card_img, (x, y))
+        dx = x + (i * card_width_and_buffer)
+        screen.blit(card_img, (dx, y))
 
 
 def draw_card(screen: pygame.Surface, card_img: pygame.Surface, row, column):
@@ -66,7 +65,6 @@ def create_text(text: str, color: (int, int, int), top_left: (int, int), font: p
 
 
 def play_blackjack_hand(screen, font, start_drawing, clock, card_deck):
-    dealer_card_drawing, dealer_rect, dealer_text = get_text_surface("Dealer Hand", font, start_drawing)
     player_card_drawing, player_rect, player_text = get_text_surface("Player Hand", font, start_drawing, 180)
 
     hand = deal_hand(card_deck)
@@ -100,7 +98,6 @@ def play_blackjack_hand(screen, font, start_drawing, clock, card_deck):
                     game_state = GS_DEALER
 
         # process out the game state
-
         if game_state == GS_PLAYER:
             msg_text = "Hit 'H' to hit or 'S' to stand"
         if game_state == GS_BLACKJACK:
@@ -123,41 +120,33 @@ def play_blackjack_hand(screen, font, start_drawing, clock, card_deck):
             else:
                 msg_text = "The dealer wins"
 
-        p_msg_rect, p_msg_draw = inst_drawing_surface(msg_text,
-                                                      font,
-                                                      start_drawing,
-                                                      320 + font.get_height() + 20)
-
         if game_state == GS_DEALER:
             if dealer_total < 17 and dealer_total <= player_total:
                 hand["Dealer"].append(deck.deal_card(card_deck))
                 dealer_total = hand_utils.calculate_hand_total(hand["Dealer"])
-            if dealer_total > 17 or dealer_total > player_total:
+
+            if dealer_total >= 17 or dealer_total > player_total:
                 game_state = GS_FINAL_CALC
 
         # draw out the player surface
         screen.fill(BACKGROUND)
-        screen.blit(dealer_text, dealer_rect)
+        draw_text("Dealer hand", font, screen, start_drawing[0], start_drawing[1])
 
         if game_state == GS_PLAYER:
-            draw_participant_cards(screen, hand["Dealer"], dealer_card_drawing)
+            draw_participant_cards(screen, hand["Dealer"], start_drawing[0], start_drawing[1]+font.get_height()+10)
         else:
-            draw_participant_cards(screen, hand["Dealer"], dealer_card_drawing, False)
-            deal_score_rect, dealer_score_draw = inst_drawing_surface(f"Total Dealer Face Value: {dealer_total}",
-                                                                      font,
-                                                                      start_drawing,
-                                                                      140)
-            screen.blit(dealer_score_draw, deal_score_rect)
+            draw_participant_cards(screen, hand["Dealer"], start_drawing[0], start_drawing[1]+font.get_height()+10,
+                                   False)
+            draw_text(f"Total Dealer Face Value: {dealer_total}", font, screen,
+                      start_drawing[0], start_drawing[1]+140)
 
-        screen.blit(player_text, player_rect)
-        draw_participant_cards(screen, hand["Player"], player_card_drawing, False)
+        draw_text("Player Hand", font, screen, start_drawing[0], start_drawing[1]+180)
 
-        player_score_rect, player_score_draw = inst_drawing_surface(f"Total Player Face Value: {player_total}",
-                                                                    font,
-                                                                    start_drawing,
-                                                                    320)
-        screen.blit(player_score_draw, player_score_rect)
-        screen.blit(p_msg_draw, p_msg_rect)
+        draw_participant_cards(screen, hand["Player"], start_drawing[0], start_drawing[1]+font.get_height()+190, False)
+
+        draw_text(f"Total Player Face Value: {player_total}", font, screen, start_drawing[0], start_drawing[1]+320)
+        draw_text(msg_text, font, screen, start_drawing[0], start_drawing[1]+font.get_height()+340)
+
         if game_state == GS_GAME_OVER:
             final_countdown -= 1
             if final_countdown <= 0:
@@ -205,6 +194,14 @@ def main():
 
     pygame.quit()
     quit()
+
+
+def draw_text(msg: str, font: pygame.font, screen: pygame.Surface, x, y, color=TEXT_COLOR, background=BACKGROUND):
+    text_surface = font.render(msg, True, color, background)
+    text_rect = text_surface.get_rect()
+    text_rect.top = y
+    text_rect.left = x
+    screen.blit(text_surface, text_rect)
 
 
 def inst_drawing_surface(object_text, font, start_drawing, offset):
