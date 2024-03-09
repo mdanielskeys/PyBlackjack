@@ -1,4 +1,4 @@
-from game_screen import GameScreen
+from display.game_screen import GameScreen
 
 
 def main():

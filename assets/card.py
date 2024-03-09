@@ -1,4 +1,4 @@
-import pygame_wrapper
+from display import pygame_wrapper
 
 
 class Card:

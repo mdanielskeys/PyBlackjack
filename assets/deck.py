@@ -1,5 +1,5 @@
 import random
-from card import Card
+from assets.card import Card
 
 # create a deck of cards (make a real deck since this is a capstone)
 suits = ['s', 'd', 'h', 'c']

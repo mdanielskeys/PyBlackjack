@@ -1,5 +1,5 @@
-from blackjack_hand import BlackjackHand
-from deck import DeckOfCards
+from assets.blackjack_hand import BlackjackHand
+from assets.deck import DeckOfCards
 
 
 class GameAssets:

@@ -1,9 +1,9 @@
-from game_assets import GameAssets
-from blackjack import Blackjack
-from player_hand import PlayerHand
-from dealer_hand import DealerHand
-from calculate_winner import CalculateWinner
-from end_hand import EndHand
+from assets.game_assets import GameAssets
+from logic.blackjack import Blackjack
+from logic.player_hand import PlayerHand
+from logic.dealer_hand import DealerHand
+from logic.calculate_winner import CalculateWinner
+from logic.end_hand import EndHand
 
 class Game:
     def __init__(self, display):

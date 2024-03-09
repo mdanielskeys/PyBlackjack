@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-from game_logic import Game
+from logic.game_logic import Game
 
 CARD_BACK = pygame.image.load(f"./images/card-BMPs/b1fv.bmp")
 LOGO = pygame.image.load(f"./images/blackjack2_generated.jpg")
