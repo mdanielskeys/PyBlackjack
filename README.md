@@ -6,14 +6,14 @@ As part of [100 Days of Code: The Complete Python Pro Bootcamp](https://www.udem
 
 
 ## Learning
-I tried to separate my logic from my display and avoid repeating myself in the code. I also tried to minimize the dependencies, which involves using dynamically typed language since it is pretty easy to do. However, the design could move to a statically typed language with interfaces quickly.
+I tried to separate my logic from my display and avoid repeating myself in the code. I also tried to minimize the dependencies involving dynamically typed language since it is pretty easy. However, the design could quickly move to a statically typed language with interfaces.
 ## Tools
 This was built in PyCharm. I've grown to like the editor. The only external dependency is pygame.
 ## Next Steps
-The game implements a subset of blackjack's rules. It needs some additions and perhaps some study to be complete.
+The game implements a subset of blackjack's rules. It needs some additions and perhaps some study to be completed.
 ### Betting
 Add a betting component. Start the player with a bank, allow them to adjust their bet, and keep track of the winnings or losses.
 ### Additional Rules
 Allow the player to Split and Double down when the situation calls for it. This will test the flexibility of my class states and how easy or hard it is to insert a new state.
 ### Remove Text Mode
-I still have text mode pieces in place that play in the background. They do no hard, but are not necessary. Perhaps I'll make them a command line option for debugging purposes.
+I still have text-mode pieces that play in the background. They do no harm but are not necessary. Perhaps I'll make them a command-line option for debugging purposes.
